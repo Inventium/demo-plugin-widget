@@ -1,0 +1,9 @@
+
+#sidebar ul.statustar li {
+	    font-face: sans-serif;
+	    /* float: right;*/
+		text-align: center;
+	    display: inline;
+	    list-style-type: none;
+	    padding: .35em .5em .25em .5em;
+}
