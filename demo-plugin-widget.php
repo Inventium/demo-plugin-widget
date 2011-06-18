@@ -37,21 +37,25 @@ if (!class_exists("demo_plugin_widget")) {
       
       extract($args, EXTR_SKIP);
       echo $before_widget;
+      // This is ugly and I don't like it.
+      // I need to make it cleaner...
       $title = (empty($instance['title'])) ? $this->default_title : apply_filters('widget_title', $instance['title']); 
       $demotext = (empty($instance['demotext'])) ? $this->default_demotext : $instance['demotext']; 
+
       echo $before_title . $title . $after_title; 
-      /**
-       * TODO: Refactor the output into it's own function(s)...
-       */
-?>
-<ul>
-  <li><?php echo $demotext ?></li>
-  <li>More text.</li>
-</ul>
-<?php
+      echo '<ul>';
+      echo demo_plugin_widget::listomatic('Bunch o\' text here..');
+      echo demo_plugin_widget::listomatic($demotext);
+      echo '</ul>';
       echo $after_widget;
     }
-
+ 
+    private static function listomatic($value) {
+      $item = <<<EOI
+      <li>$value</li>
+EOI;
+      return $item;
+    }
 
     function update($new_instance, $old_instance) {
       
@@ -67,33 +71,25 @@ if (!class_exists("demo_plugin_widget")) {
      */
     function form($instance) {
       
-      $instance = wp_parse_args( (array) $instance, array( 'title' => '', 'entry_title' => '', 'comments_title' => '', 'demotext' => '' ) );
-
-      $title    = esc_attr(strip_tags($instance['title']));
-      $title_id = $this->get_field_id('title');
-      $title_name = $this->get_field_name('title');
-
-      $demotext = esc_attr(strip_tags($instance['demotext']));
- 
+      $instance = wp_parse_args( (array) $instance, array( 'title' => '', 'demotext' => '')); 
       echo "<p>";
       echo $this->text_input_instance($instance, 'title', 'Title');
       echo $this->text_input_instance($instance, 'demotext', 'Demo text');
       echo "</p>";
-     }
+    }
  
 
-    // Clean everything up...
-    function text_input_instance($instance, $key, $label) {
+    private function text_input_instance($instance, $key, $label) {
 
       $value    = esc_attr(strip_tags($instance[$key]));    
       $id = $this->get_field_id($key);
       $name = $this->get_field_name($key);
-      return $this->text_input($id, $name, $value, $label);
+      return demo_plugin_widget::text_input($id, $name, $value, $label);
     }
 
 
-    // This is where overloading would be real handy...
-    function text_input($id, $name, $value, $label) {
+    // This is where we need an abstract final class or something...
+    private static function text_input($id, $name, $value, $label) {
     
       $input = <<<EOI
       <label for="$id">$label: 
