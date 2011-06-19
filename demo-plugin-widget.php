@@ -36,16 +36,16 @@ if (!class_exists("demo_plugin_widget")) {
     function widget($args, $instance) {
       
       extract($args, EXTR_SKIP);
-      echo $before_widget;
       // This is ugly and I don't like it.
       // I need to make it cleaner...
       $title = (empty($instance['title'])) ? $this->default_title : apply_filters('widget_title', $instance['title']); 
       $demotext = (empty($instance['demotext'])) ? $this->default_demotext : $instance['demotext']; 
 
+      echo $before_widget;
       echo $before_title . $title . $after_title; 
       echo '<ul>';
-      echo demo_plugin_widget::listomatic('Bunch o\' text here..');
-      echo demo_plugin_widget::listomatic($demotext);
+      echo self::listomatic('Bunch o\' text here..');
+      echo self::listomatic($demotext);
       echo '</ul>';
       echo $after_widget;
     }
