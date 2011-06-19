@@ -84,7 +84,7 @@ EOI;
       $value    = esc_attr(strip_tags($instance[$key]));    
       $id = $this->get_field_id($key);
       $name = $this->get_field_name($key);
-      return demo_plugin_widget::text_input($id, $name, $value, $label);
+      return self::text_input($id, $name, $value, $label);
     }
 
 
